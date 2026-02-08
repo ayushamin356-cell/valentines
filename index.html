@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Aaru ❤️</title>
+
+<style>
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #ff99cc, #cc66ff, #ff66b2, #b366ff);
+    background-size: 400% 400%;
+    animation: gradientMove 12s ease infinite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.container {
+    background: transparent;
+    padding: 40px;
+    border-radius: 25px;
+    box-shadow: none;
+    position: relative;
+    z-index: 10;
+}
+
+
+h1 {
+    color: white;
+    font-size: 2.2em;
+    margin-bottom: 30px;
+}
+
+button {
+    font-size: 20px;
+    padding: 12px 25px;
+    margin: 15px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+}
+
+/* YES BUTTON */
+#yesBtn {
+    background: linear-gradient(45deg, #ff4da6, #ff80bf);
+    color: white;
+    transition: transform 0.3s ease;
+}
+
+#yesBtn:hover {
+    transform: scale(1.25);
+}
+
+/* NO BUTTON */
+#noBtn {
+    background: linear-gradient(45deg, #888, #555);
+    color: white;
+    position: relative;
+}
+
+/* MUSIC BUTTON */
+#musicBtn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: linear-gradient(45deg, #ff4da6, #b366ff);
+    border: none;
+    color: white;
+    font-size: 18px;
+    padding: 12px 18px;
+    border-radius: 30px;
+    cursor: pointer;
+    z-index: 20;
+}
+
+/* PHOTOS */
+.bgPhoto {
+    position: fixed;
+    width: 220px;
+    border-radius: 20px;
+    opacity: 0.85;
+    filter: blur(10px);
+
+    /* slow smooth unblur */
+    transition: filter 7s ease, transform 7s ease;
+
+    box-shadow: 0 0 25px rgba(255,255,255,0.6);
+}
+
+/* DO NOT CHANGE ALIGNMENT */
+#photo1 {
+    top: 5%;
+    left: 5%;
+}
+
+#photo2 {
+    bottom: 5%;
+    right: 5%;
+}
+
+/* removes blur fully */
+.clearPhoto {
+    filter: blur(0px);
+    transform: scale(1.1);
+}
+
+</style>
+</head>
+
+<body>
+
+<img src="flowers.jpeg" class="bgPhoto" id="photo1">
+<img src="Goa.jpeg" class="bgPhoto" id="photo2">
+
+<audio id="bgMusic" loop>
+    <source src="lavieenrose.mp3" type="audio/mpeg">
+</audio>
+
+<div class="container">
+
+    <h1>Aaru, will you be my Valentine? ❤️</h1>
+
+    <button id="yesBtn">Yes ❤️</button>
+    <button id="noBtn">No</button>
+
+</div>
+
+<button id="musicBtn">🎵 Play Music</button>
+
+<script>
+
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const musicBtn = document.getElementById("musicBtn");
+const music = document.getElementById("bgMusic");
+
+const photo1 = document.getElementById("photo1");
+const photo2 = document.getElementById("photo2");
+
+let musicPlaying = false;
+
+
+/* NO button runs away */
+noBtn.addEventListener("mouseover", () => {
+
+    const maxX = window.innerWidth - noBtn.offsetWidth;
+    const maxY = window.innerHeight - noBtn.offsetHeight;
+
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
+
+    noBtn.style.position = "absolute";
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+
+});
+
+
+/* smooth music fade */
+function fadeInMusic(){
+
+    let vol = 0;
+    music.volume = 0;
+
+    let fade = setInterval(() => {
+
+        if(vol < 1){
+            vol += 0.05;
+            music.volume = vol;
+        }
+        else{
+            clearInterval(fade);
+        }
+
+    },200);
+}
+
+
+/* music button */
+musicBtn.onclick = () => {
+
+    if(musicPlaying){
+        music.pause();
+        musicBtn.innerText = "🎵 Play Music";
+    }
+    else{
+        music.play();
+        fadeInMusic();
+        musicBtn.innerText = "⏸ Pause Music";
+    }
+
+    musicPlaying = !musicPlaying;
+
+};
+
+
+/* YES CLICK */
+yesBtn.onclick = () => {
+
+    if(!musicPlaying){
+        music.play();
+        fadeInMusic();
+        musicPlaying = true;
+        musicBtn.innerText = "⏸ Pause Music";
+    }
+
+    /* remove blur slowly */
+    photo1.classList.add("clearPhoto");
+    photo2.classList.add("clearPhoto");
+
+    /* WAIT LONG ENOUGH for full transition */
+    setTimeout(() => {
+
+        document.body.innerHTML = `
+        <div style="
+        height:100vh;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        flex-direction:column;
+        background: linear-gradient(135deg, #ff99cc, #cc66ff);
+        color:white;
+        font-size:32px;
+        text-align:center;
+        ">
+        YAYYYYY ❤️<br><br>
+        I LOVE YOU SO MUCH AARU 💖<br><br>
+        BEST VALENTINE EVER ❤️
+        </div>
+        `;
+
+    },14000); /* 14 seconds total */
+
+};
+
+</script>
+
+</body>
+</html>
